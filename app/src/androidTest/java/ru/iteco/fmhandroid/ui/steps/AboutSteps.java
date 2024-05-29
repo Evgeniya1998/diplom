@@ -17,6 +17,8 @@ import static ru.iteco.fmhandroid.ui.utils.Utils.waitDisplayed;
 import android.app.Instrumentation;
 import android.content.Intent;
 import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.intent.matcher.IntentMatchers;
+
 import org.hamcrest.Matcher;
 import io.qameta.allure.kotlin.Allure;
 import ru.iteco.fmhandroid.ui.data.DataHelper;
@@ -33,25 +35,33 @@ public class AboutSteps {
     public void checkingUrlPrivacy() {
         Allure.step("Переход по ссылке Политики конфиденциальности");
         Intents.init();
-        //Matcher<Intent> expectedIntent = allOf(hasAction(Intent.ACTION_VIEW), hasData(urlPrivacyPolicy));
-        //intending(expectedIntent).respondWith(new Instrumentation.ActivityResult(0, null));
+        Matcher<Intent> expectedIntent = allOf(hasAction(Intent.ACTION_VIEW), hasData(urlPrivacyPolicy));
+        intending(expectedIntent).respondWith(new Instrumentation.ActivityResult(0, null));
         about.privacyPolicy.perform(click());
-        intended(hasData(urlPrivacyPolicy));
-        //intended(expectedIntent);
+        intended(expectedIntent);
         Intents.release();
     }
-    public void checkingUrlTerms()  {
+
+    public void checkingUrlTerms() {
         Allure.step("Переход по ссылке Пользовательского соглашения");
         Intents.init();
+        Matcher<Intent> expectedIntent = allOf(hasAction(Intent.ACTION_VIEW), hasData(urlTermsOfUse));
+        intending(expectedIntent).respondWith(new Instrumentation.ActivityResult(0, null));
         about.termsOfUse.perform(click());
-        //Matcher<Intent> expectedIntent = allOf(hasAction(Intent.ACTION_VIEW), hasData(urlTermsOfUse));
-       // intending(expectedIntent).respondWith(new Instrumentation.ActivityResult(0, null));
-        intended(hasData(urlTermsOfUse));
+        intended(expectedIntent);
         Intents.release();
-
     }
+
     public void backButton() {
         Allure.step("Возврат к предыдущей странице");
         about.backButton.perform(click());
+    }
+    public void goToTermsOfUse() {
+        Allure.step("Переход по ссылке Пользовательского соглашения");
+        about.termsOfUse.perform(click());
+    }
+    public void goToPrivacyPolicy() {
+        Allure.step("Переход по ссылке Политики конфиденциальности");
+        about.privacyPolicy.perform(click());
     }
 }

@@ -1,4 +1,10 @@
 package ru.iteco.fmhandroid.ui.tests;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasData;
+
+import static ru.iteco.fmhandroid.ui.data.DataHelper.urlTermsOfUse;
+
+import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
@@ -29,9 +35,6 @@ public class AboutTest {
     public ActivityScenarioRule<AppActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(AppActivity.class);
     @Rule
-    public ActivityTestRule<AppActivity> mActivityTestRule =
-            new ActivityTestRule<>(AppActivity.class);
-    @Rule
     public ScreenshotRule screenshotRule = new ScreenshotRule(ScreenshotRule.Mode.FAILURE,
             String.valueOf(System.currentTimeMillis()));
 
@@ -49,7 +52,11 @@ public class AboutTest {
     public void followTheLinkPrivacyPolicyTest() {
         auth.goMenuAbout();
         about.checkingAboutPage();
-        about.checkingUrlPrivacy();
+        //about.checkingUrlPrivacy();
+        Intents.init();
+        about.goToPrivacyPolicy();
+        intended(hasData("https://vhospice.org/#/privacy-policy"));
+        Intents.release();
         about.backButton();
     }
 
@@ -58,7 +65,11 @@ public class AboutTest {
     public void followTheLinkTermsOfUseTest()  {
         auth.goMenuAbout();
         about.checkingAboutPage();
-        about.checkingUrlTerms();
+        //about.checkingUrlTerms();
+        Intents.init();
+        about.goToTermsOfUse();
+        intended(hasData("https://vhospice.org/#/terms-of-use"));
+        Intents.release();
         about.backButton();
-    }
+}
 }
